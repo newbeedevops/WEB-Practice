@@ -6,6 +6,7 @@ pipeline {
         {
             input {
               message 'Enter the data'
+              ok 'Approve'
               parameters {
                     string(name:'AUTHOR', defaultValue: 'Sergio', description: 'Author of the web application deployment ')
                     string(name:'ENVIRONMENT', defaultValue: 'Development',description: 'Environment to deploy')
