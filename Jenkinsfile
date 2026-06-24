@@ -15,9 +15,9 @@ pipeline {
             steps{
                 echo "The responsible of this project is ${AUTHOR} and and will be deployed in ${ENVIRONMENT}"
                 //Fisrt, drop the directory if exists
-                sh 'rm -rf /home/jenkins/web'
+                sh 'rm -rf "$WORKSPACE/deploy-web"'
                 //Create the directory
-                sh 'mkdir -p /home/jenkins/web'
+                sh 'mkdir -p "$WORKSPACE/deploy-web"'
                 
             }
         }
@@ -30,13 +30,13 @@ pipeline {
         stage('Create the Apache httpd container') {
             steps {
             echo 'Creating the container...'
-            sh 'docker run -dit --name apache1 -p 9000:80  -v /home/jenkins/web:/usr/local/apache2/htdocs/ httpd'
+            sh 'docker run -dit --name apache1 -p 9000:80 -v "$WORKSPACE/deploy-web:/usr/local/apache2/htdocs/" httpd'
             }
         }
         stage('Copy the web application to the container directory') {
             steps {
                 echo 'Copying web application...'             
-                sh 'cp -r web/* /home/jenkins/web'
+                sh 'cp -r web/* "$WORKSPACE/deploy-web"'
             }
         }
         stage('Checking the app') {
